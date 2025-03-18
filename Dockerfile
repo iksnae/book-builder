@@ -28,23 +28,22 @@ RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
     build-essential \
+    ca-certificates \
     # Clean up
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Node.js directly (no NVM needed)
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get update \
-    && apt-get install -y nodejs \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && npm install -g npm@latest
+# Install Node.js directly - split installation steps for better debugging
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+RUN apt-get update && apt-get install -y nodejs && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Version check and npm update (separated for better error handling)
+RUN node --version
+RUN npm --version
+RUN npm install -g npm@latest || echo "npm update failed, but continuing with build"
 
 # Create workspace directory
 WORKDIR /workspace
-
-# Check Node.js and npm installation
-RUN node --version && npm --version
 
 # Expose volume for book content
 VOLUME ["/workspace"]
