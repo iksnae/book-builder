@@ -1,0 +1,50 @@
+# Sample book configuration file
+---
+title: "My Book Title"
+author: "Author Name"
+date: "2025"
+language: "en-US"
+
+# Output formats
+output_formats:
+  - pdf
+  - epub
+  - html
+
+# PDF specific settings
+pdf_settings:
+  paper_size: "letter"  # a4, letter
+  font_size: 11
+  margin_top: "1in"
+  margin_right: "1in"
+  margin_bottom: "1in"
+  margin_left: "1in"
+  toc: true
+  toc_depth: 3
+  numbering: true
+
+# EPUB specific settings
+epub_settings:
+  cover_image: "images/cover.jpg"
+  css: "styles/epub.css"
+  epub_version: "3"
+
+# HTML specific settings
+html_settings:
+  theme: "default"
+  css: "styles/html.css"
+  toc: true
+  self_contained: true
+  
+# Book content structure (files will be combined in this order)
+content:
+  - frontmatter/title.md
+  - frontmatter/copyright.md
+  - frontmatter/dedication.md
+  - frontmatter/preface.md
+  - chapters/01-introduction.md
+  - chapters/02-main-content.md
+  - chapters/03-conclusion.md
+  - backmatter/appendix.md
+  - backmatter/glossary.md
+  - backmatter/bibliography.md
