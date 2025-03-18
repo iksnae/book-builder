@@ -1,0 +1,5 @@
+# {title}
+
+By {author}
+
+{date}
