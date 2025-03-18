@@ -1,32 +1,49 @@
-FROM ubuntu:22.04
+FROM ubuntu:20.04
 
 LABEL maintainer="iksnae"
 LABEL description="Docker image for building books"
 
-# Set non-interactive installation
+# Set non-interactive installation and prevent dpkg output from being blocked
 ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBCONF_NOWARNINGS="yes"
 
-# Update and install basic dependencies
+# Install required dependencies for book building
 RUN apt-get update && apt-get install -y \
-    build-essential \
+    pandoc \
+    texlive-xetex \
+    texlive-fonts-recommended \
+    texlive-fonts-extra \
+    texlive-latex-extra \
     curl \
     git \
+    build-essential \
     python3 \
     python3-pip \
-    texlive-full \
-    pandoc \
+    wget \
+    unzip \
+    default-jre \
+    calibre \
+    librsvg2-bin \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
-RUN pip3 install --no-cache-dir \
-    jupyter \
-    nbconvert \
-    markdown \
-    pyyaml
+# Install Node.js directly instead of using NVM
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g npm@latest
 
 # Set working directory
-WORKDIR /book
+WORKDIR /workspace
+
+# Copy package.json and install dependencies if they exist
+COPY package*.json ./
+RUN if [ -f "package.json" ]; then npm install; fi
+
+# Copy the rest of the files
+COPY . /workspace/
+
+# Make build script executable
+RUN if [ -f "build.sh" ]; then chmod +x build.sh; fi
 
 # Default command
 CMD ["/bin/bash"]
