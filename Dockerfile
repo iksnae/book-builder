@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install -y \
     calibre \
     # Image processing tools
     librsvg2-bin \
+    imagemagick \
     # Basic utilities
     curl \
     wget \
@@ -42,6 +43,13 @@ RUN apt-get update && apt-get install -y nodejs && apt-get clean && rm -rf /var/
 RUN node --version
 RUN npm --version
 RUN npm install -g npm@latest || echo "npm update failed, but continuing with build"
+
+# Install Python requirements
+RUN pip3 install --no-cache-dir pyyaml
+
+# Add helper scripts for reliable EPUB generation
+COPY scripts/generate-epub.sh /usr/local/bin/generate-epub
+RUN chmod +x /usr/local/bin/generate-epub
 
 # Create workspace directory
 WORKDIR /workspace
