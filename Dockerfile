@@ -29,12 +29,13 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     build-essential \
     ca-certificates \
+    gnupg \
     # Clean up
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Node.js directly - split installation steps for better debugging
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+# Install Node.js 20.x - split installation steps for better debugging
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
 RUN apt-get update && apt-get install -y nodejs && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Version check and npm update (separated for better error handling)
