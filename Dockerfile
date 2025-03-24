@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
 
 LABEL maintainer="iksnae"
-LABEL description="Docker image for building books in multiple formats (PDF, EPUB, MOBI, HTML)"
+LABEL description="Docker image for building books in multiple formats (PDF, EPUB, MOBI, HTML, DOCX)"
 
 # Set non-interactive installation and prevent dpkg output from being blocked
 ENV DEBIAN_FRONTEND=noninteractive
@@ -15,6 +15,8 @@ RUN apt-get update && apt-get install -y \
     texlive-fonts-recommended \
     texlive-fonts-extra \
     texlive-latex-extra \
+    # DOCX support
+    libreoffice \
     # EPUB/MOBI generation tools
     calibre \
     # Image processing tools
